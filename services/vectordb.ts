@@ -16,10 +16,10 @@ interface VectorChunkPayload {
     page: number;
   };
 }
+export const index = pc.index(process.env.PINECONE_INDEX_NAME || "rag-index");
 
 export async function storeInVectorDB(payload: VectorChunkPayload) {
   // Target your specific index configured in your Vector DB dashboard
-  const index = pc.index(process.env.PINECONE_INDEX_NAME || "rag-index");
 
   // Upsert the vector vector into the DB
   await index.upsert({

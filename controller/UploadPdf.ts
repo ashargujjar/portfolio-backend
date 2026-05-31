@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import UploadSkill from "../model/upload";
 import { ApiResponse } from "../utils/apiResponse";
-import { generateId, ragQueue } from "../services/que";
-
+import { uploadToVectorDB } from "../services/worker";
+import { index } from "../services/vectordb";
 export const uploadKnowledgePdf = async (req: Request, res: Response) => {
   try {
     const { secure_url, public_id } = req.body;
@@ -10,15 +10,12 @@ export const uploadKnowledgePdf = async (req: Request, res: Response) => {
     if (!secure_url || !public_id) {
       throw new Error("secure_url and public_id are required");
     }
-    const job = await ragQueue.add("process-for-rag", {
-      cloudinaryUrl: secure_url,
-      documentId: generateId(),
-      uploadedAt: new Date().toISOString(),
-    });
+
     const pdf = new UploadSkill(secure_url, public_id);
     const exists = await pdf.exists();
 
     if (exists) {
+      await index.deleteAll();
       const deleted = await UploadSkill.deletePdf(exists.publicId);
       if (!deleted) {
         throw new Error("Failed to delete existing knowledge PDF");
@@ -31,6 +28,7 @@ export const uploadKnowledgePdf = async (req: Request, res: Response) => {
       "Knowledge PDF saved successfully",
       saved,
     );
+    const upload = await uploadToVectorDB(secure_url);
     return res.status(201).json(response);
   } catch (error) {
     const response =
