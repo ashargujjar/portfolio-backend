@@ -49,6 +49,7 @@ export const deletePdf = async (req: Request, res: Response) => {
       }
       public_id = pdf.publicId;
     }
+    await index.deleteAll();
 
     const deleted = await UploadSkill.deletePdf(public_id);
     if (!deleted) {

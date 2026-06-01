@@ -30,38 +30,38 @@ const Routes = express.Router();
 Routes.get("/", (req: Request, res: Response) => {
   res.send("server is running");
 });
-Routes.post("/api/login", login);
-Routes.post("/api/chat", PostChatQuestion);
+Routes.post("/login", login);
+Routes.post("/chat", PostChatQuestion);
 // -------------- Skill ---------------
-Routes.route("/api/skills")
+Routes.route("/skills")
   .get(getSkills)
   .post(Authenticate, CreateSkillCategory)
   .patch(Authenticate, AddSkills)
   .delete(Authenticate, deleteSkill);
 
-Routes.delete("/api/skills/specific", deleteSpecificSkill);
-Routes.patch("/api/skills/title", editTitle);
+Routes.delete("/skills/specific", deleteSpecificSkill);
+Routes.patch("/skills/title", editTitle);
 
 // --------------- Education ------------------
-Routes.route("/api/education")
+Routes.route("/education")
   .get(getEducation)
   .post(Authenticate, addEducation)
   .delete(Authenticate, deletEducation)
   .patch(Authenticate, editEducation);
 // --------------- Experience ------------------
 
-Routes.route("/api/experience")
+Routes.route("/experience")
   .get(getExperience)
   .post(Authenticate, addExperience)
   .delete(Authenticate, deleteExperiance)
   .patch(Authenticate, editExperiance);
-Routes.post("/api/uploads/signature", Authenticate, generateSignature);
-Routes.route("/api/uploads/knowledge-pdf")
+Routes.post("/uploads/signature", Authenticate, generateSignature);
+Routes.route("/uploads/knowledge-pdf")
   .get(getPdf)
   .post(Authenticate, uploadKnowledgePdf)
   .delete(Authenticate, deletePdf);
 //   ----------- Project ------------
-Routes.route("/api/project").post(
+Routes.route("/project").post(
   Authenticate,
   upload.fields([
     { name: "banner", maxCount: 1 },
@@ -69,7 +69,7 @@ Routes.route("/api/project").post(
   ]),
   uploadProject,
 );
-Routes.route("/api/project/:id").patch(
+Routes.route("/project/:id").patch(
   Authenticate,
   upload.fields([
     { name: "banner", maxCount: 1 },
@@ -77,23 +77,23 @@ Routes.route("/api/project/:id").patch(
   ]),
   editProject,
 );
-Routes.delete("/api/image/:projectId", Authenticate, deleteImage);
-Routes.delete("/api/project/:id", Authenticate, deleteProject);
-Routes.get("/api/project", getProject);
+Routes.delete("/image/:projectId", Authenticate, deleteImage);
+Routes.delete("/project/:id", Authenticate, deleteProject);
+Routes.get("/project", getProject);
 
 // ----------- Certificate ------------
-Routes.route("/api/certificates")
+Routes.route("/certificates")
   .get(getCertificates)
   .post(Authenticate, addCertificate);
-Routes.route("/api/certificates/:id")
+Routes.route("/certificates/:id")
   .patch(Authenticate, editCertificate)
   .delete(Authenticate, deleteCertificate);
 
 // ----------- Blog ------------
-Routes.route("/api/blogs")
+Routes.route("/blogs")
   .get(getBlogs)
   .post(Authenticate, addBlog);
-Routes.route("/api/blogs/:id")
+Routes.route("/blogs/:id")
   .patch(Authenticate, editBlog)
   .delete(Authenticate, deleteBlog);
 
