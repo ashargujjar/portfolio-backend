@@ -22,6 +22,7 @@ import { deleteImage, deleteProject, editProject, getProject, uploadProject } fr
 import { addCertificate, deleteCertificate, editCertificate, getCertificates } from "../controller/certificate";
 import { addBlog, editBlog, deleteBlog, getBlogs } from "../controller/Blogs";
 import { login } from "../controller/Login";
+import { PostChatQuestion } from "../controller/Chat";
 import Authenticate from "../middleware/Authenticate";
 
 const Routes = express.Router();
@@ -30,6 +31,7 @@ Routes.get("/", (req: Request, res: Response) => {
   res.send("server is running");
 });
 Routes.post("/api/login", login);
+Routes.post("/api/chat", PostChatQuestion);
 // -------------- Skill ---------------
 Routes.route("/api/skills")
   .get(getSkills)
