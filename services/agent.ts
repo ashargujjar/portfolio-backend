@@ -6,13 +6,14 @@ import { portfolioSystemPrompt } from "../utils/prompts";
 import { index } from "./vectordb";
 const embeddings = new OpenAIEmbeddings({
   apiKey: process.env.OPENAI_KEY,
+  model: "text-embedding-3-small"
 });
 const portfolioTool = tool(
   async ({ query }) => {
     const vector = await embeddings.embedQuery(query);
     const result = await index.query({
       vector,
-      topK: 5,
+      topK: 10,
       includeMetadata: true,
     });
     const context = result.matches
